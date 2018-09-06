@@ -1,5 +1,6 @@
 package controller;
 
+import javafx.embed.swing.SwingFXUtils;
 import javafx.fxml.FXML;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -9,7 +10,9 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import model.EditableImage;
 
+import javax.imageio.ImageIO;
 import java.io.File;
+import java.io.IOException;
 
 public class Controller {
     @FXML BorderPane scenePane;
@@ -43,5 +46,18 @@ public class Controller {
                 new FileChooser.ExtensionFilter("JPG", "*.jpg"),
                 new FileChooser.ExtensionFilter("PNG", "*.png")
         );
+    }
+
+    public void saveImage(){
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Save");
+        File file = fileChooser.showSaveDialog(null);
+        if (file != null) {
+            try {
+                ImageIO.write(SwingFXUtils.fromFXImage(imgView.getImage(), null), "png", file);
+            } catch (IOException ex) {
+                System.out.println("aucun fichier choisi");
+            }
+        }
     }
 }
