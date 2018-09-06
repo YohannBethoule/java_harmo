@@ -50,8 +50,10 @@ public class Controller {
 
     public void saveImage(){
         FileChooser fileChooser = new FileChooser();
-        fileChooser.setSelectedExtensionFilter(new FileChooser.ExtensionFilter("JPG", "*.jpg"));
-        fileChooser.setTitle("Save");
+
+        fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
+
+        fileChooser.setTitle("Save picture");
         File file = fileChooser.showSaveDialog(null);
         if (file != null) {
             try {
