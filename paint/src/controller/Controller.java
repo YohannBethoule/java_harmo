@@ -7,13 +7,14 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import model.EditableImage;
 
 import java.io.File;
 
 public class Controller {
     @FXML BorderPane scenePane;
     @FXML AnchorPane imgPane;
-    @FXML ImageView imgView;
+    @FXML EditableImage imgView;
 
     @FXML
     public void openImage(){
@@ -26,6 +27,11 @@ public class Controller {
             Image img = new Image(f.toURI().toString());
             imgView.setImage(img);
         }
+    }
+
+    @FXML
+    public void greyscaleRender(){
+        imgView.RGBtoGrey();
     }
 
     private static void configureFileChooser(final FileChooser fileChooser) {
