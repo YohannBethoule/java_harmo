@@ -3,17 +3,22 @@ package controller;
 import javafx.fxml.FXML;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.BorderPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import java.io.File;
 
 public class Controller {
-    @FXML
-    ImageView imgView;
+    @FXML BorderPane scenePane;
+    @FXML AnchorPane imgPane;
+    @FXML ImageView imgView;
 
     @FXML
     public void openImage(){
+        imgView.fitWidthProperty().bind(imgPane.widthProperty());
+        imgView.fitHeightProperty().bind(imgPane.heightProperty());
         final FileChooser fileChooser = new FileChooser();
         configureFileChooser(fileChooser);
         File f = fileChooser.showOpenDialog(new Stage());
