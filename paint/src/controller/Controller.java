@@ -77,12 +77,11 @@ public class Controller {
         fileChooser.setInitialFileName("save");
         fileChooser.setTitle("Save picture");
         fileChooser.getExtensionFilters().addAll(
-                new FileChooser.ExtensionFilter("JPG", "*.jpg"),
                 new FileChooser.ExtensionFilter("PNG", "*.png", "*.jpg", "*.gif"));
         File file = fileChooser.showSaveDialog(null);
         if (file != null) {
             try {
-                ImageIO.write(SwingFXUtils.fromFXImage(imgView.getImage(), null), "jpg", file);
+                ImageIO.write(SwingFXUtils.fromFXImage(imgView.getImage(), null), "png", file);
             } catch (IOException ex) {
                 System.out.println("aucun fichier choisi");
             }
