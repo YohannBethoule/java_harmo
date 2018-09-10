@@ -88,16 +88,4 @@ public class Controller {
             }
         }
     }
-
-   /* public void saveImage(ZoneDessin ptD){
-        JFileChooser jSauverIm = new JFileChooser();
-        jSauverIm.showSaveDialog(this);
-        File f = jSauverIm.getSelectedFile();
-        String s = jSauverIm.getName(f);
-        BufferedImage image = new BufferedImage(ptD.getHeight(), ptD.getWidth(), BufferedImage.TYPE_INT_ARGB);
-        System.out.println(ptD.getHeight()); System.out.println(ptD.getWidth());
-        FileImageOutputStream output = new FileImageOutputStream(f);
-        ImageIO.write(image, "jpg", output);
-    }*/
-
 }
