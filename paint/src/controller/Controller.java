@@ -1,7 +1,12 @@
 package controller;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.fxml.FXML;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
@@ -18,6 +23,7 @@ public class Controller {
     @FXML BorderPane scenePane;
     @FXML AnchorPane imgPane;
     @FXML EditableImage imgView;
+    @FXML ChoiceBox choice_color;
 
     @FXML
     public void openImage(){
@@ -46,6 +52,22 @@ public class Controller {
                 new FileChooser.ExtensionFilter("JPG", "*.jpg"),
                 new FileChooser.ExtensionFilter("PNG", "*.png")
         );
+    }
+
+    public void setColorOptions(){
+        ObservableList<String> colors //
+                = FXCollections.observableArrayList("red", "green", "blue");
+        choice_color.setItems(colors);
+        choice_color.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
+
+            @Override
+            public void changed(ObservableValue<? extends String> observable, //
+                                String oldValue, String newValue) {
+                if (newValue != null) {
+                    imgView.independantColor(newValue);
+                }
+            }
+        });
     }
 
     public void saveImage(){

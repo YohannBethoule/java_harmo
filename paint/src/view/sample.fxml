@@ -10,6 +10,7 @@
 
 <?import model.EditableImage?>
 
+<?import javafx.scene.control.ChoiceBox?>
 <BorderPane fx:id="scenePane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.Controller">
    <top>
       <HBox BorderPane.alignment="CENTER">
@@ -23,7 +24,7 @@
       <VBox BorderPane.alignment="CENTER">
          <children>
             <Button mnemonicParsing="false" text="Grey levels Render" onAction="#greyscaleRender"/>
-            <Button mnemonicParsing="false" text="RGB manipulations" />
+            <ChoiceBox fx:id="choice_color" prefWidth="150.0"/>
          </children>
       </VBox>
    </right>
