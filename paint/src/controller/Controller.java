@@ -52,15 +52,30 @@ public class Controller {
         FileChooser fileChooser = new FileChooser();
 
         fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
-
+        fileChooser.setInitialFileName("save");
         fileChooser.setTitle("Save picture");
+        fileChooser.getExtensionFilters().addAll(
+                new FileChooser.ExtensionFilter("JPG", "*.jpg"),
+                new FileChooser.ExtensionFilter("PNG", "*.png", "*.jpg", "*.gif"));
         File file = fileChooser.showSaveDialog(null);
         if (file != null) {
             try {
-                ImageIO.write(SwingFXUtils.fromFXImage(imgView.getImage(), null), ".png", file);
+                ImageIO.write(SwingFXUtils.fromFXImage(imgView.getImage(), null), "jpg", file);
             } catch (IOException ex) {
                 System.out.println("aucun fichier choisi");
             }
         }
     }
+
+   /* public void saveImage(ZoneDessin ptD){
+        JFileChooser jSauverIm = new JFileChooser();
+        jSauverIm.showSaveDialog(this);
+        File f = jSauverIm.getSelectedFile();
+        String s = jSauverIm.getName(f);
+        BufferedImage image = new BufferedImage(ptD.getHeight(), ptD.getWidth(), BufferedImage.TYPE_INT_ARGB);
+        System.out.println(ptD.getHeight()); System.out.println(ptD.getWidth());
+        FileImageOutputStream output = new FileImageOutputStream(f);
+        ImageIO.write(image, "jpg", output);
+    }*/
+
 }
