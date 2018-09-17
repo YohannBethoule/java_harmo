@@ -1,6 +1,7 @@
 package Harmo_Partie1;
 
 import java.io.*;
+import java.util.Scanner;
 
 public class Carnet implements Serializable {
 	private Personne personnes[];
@@ -11,11 +12,19 @@ public class Carnet implements Serializable {
 		this.count = 0;
 	}
 
-	public void ajouterPersonne(Personne p) throws Exception {
+	public void ajouterPersonne() throws Exception {
 		if (personnes.length == count) {
 			throw new Exception("Le carnet est deja plein");
 		}
-		personnes[count] = p;
+		Scanner sc = new Scanner(System.in);
+		System.out.print("Saisir nom : ");
+		String nom = sc.nextLine();
+		System.out.print("Saisir prenom : ");
+		String prenom = sc.nextLine();
+		System.out.print("Saisir tel : ");
+		String tel = sc.nextLine();
+		Personne personne = new Personne(nom, prenom, tel);
+		personnes[count] = personne;
 		count++;
 	}
 
@@ -77,34 +86,32 @@ public class Carnet implements Serializable {
 	public void setPersonnes(Personne[] tab) {
 		personnes = tab;
 	}
-	
+
 	public void sauvegarde() {
 		try {
-		 FileOutputStream file = new FileOutputStream("save.txt");
-         ObjectOutputStream out = new ObjectOutputStream(file);
+			FileOutputStream file = new FileOutputStream("save.txt");
+			ObjectOutputStream out = new ObjectOutputStream(file);
 
-        	 out.writeObject(this);
-         
-         
-         out.close();
-         file.close();
-         
-		}catch(IOException ex)
-         {
-             System.out.println("IOException is caught");
-         }
+			out.writeObject(this);
+
+			out.close();
+			file.close();
+
+		} catch (IOException ex) {
+			System.out.println("IOException is caught");
+		}
 	}
-	
+
 	public void chargement() throws IOException, ClassNotFoundException {
 		FileInputStream file = new FileInputStream("save.txt");
-        ObjectInputStream in = new ObjectInputStream(file);
-        Carnet c = (Carnet)in.readObject();
-        this.personnes = c.getPersonnes();
-        this.count = c.getCount();
-        System.out.println("Object has been deserialized ");
-        
-        in.close();
-        file.close();
+		ObjectInputStream in = new ObjectInputStream(file);
+		Carnet c = (Carnet) in.readObject();
+		this.personnes = c.getPersonnes();
+		this.count = c.getCount();
+		System.out.println("Object has been deserialized ");
+
+		in.close();
+		file.close();
 	}
 
 }
