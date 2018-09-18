@@ -7,23 +7,29 @@ import javafx.collections.ObservableList;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.fxml.FXML;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.ProgressBar;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import model.EditableImage;
+import javafx.concurrent.WorkerStateEvent;
+import model.ImageEditor;
 
 import javax.imageio.ImageIO;
 import java.io.File;
 import java.io.IOException;
 
 public class Controller {
+    Image original;
+    ImageEditor imgEditor;
+
     @FXML BorderPane scenePane;
     @FXML AnchorPane imgPane;
-    @FXML EditableImage imgView;
+    @FXML ImageView imgView;
     @FXML ChoiceBox choice_color;
+    @FXML ProgressBar pbar;
 
     @FXML
     public void openImage(){
@@ -35,12 +41,23 @@ public class Controller {
         if (f != null) {
             Image img = new Image(f.toURI().toString());
             imgView.setImage(img);
+            original = img;
         }
     }
 
     @FXML
     public void greyscaleRender(){
-        imgView.RGBtoGrey();
+        imgEditor = new ImageEditor(original);
+
+        pbar.progressProperty().unbind();
+        pbar.progressProperty().bind(imgEditor.progressProperty());
+        pbar.setVisible(true);
+        //Event fired when the service succeeded successfully!!!
+        imgEditor.setOnSucceeded((WorkerStateEvent we) -> {
+            imgView.setImage(imgEditor.getValue());
+            pbar.setVisible(false);
+        });
+        imgEditor.restart();
     }
 
     private static void configureFileChooser(final FileChooser fileChooser) {
@@ -64,7 +81,16 @@ public class Controller {
             public void changed(ObservableValue<? extends String> observable, //
                                 String oldValue, String newValue) {
                 if (newValue != null) {
-                    imgView.independantColor(newValue);
+                    imgEditor = new ImageEditor(original, newValue);
+                    pbar.progressProperty().unbind();
+                    pbar.progressProperty().bind(imgEditor.progressProperty());
+                    pbar.setVisible(true);
+                    //Event fired when the service succeeded successfully!!!
+                    imgEditor.setOnSucceeded((WorkerStateEvent we) -> {
+                        imgView.setImage(imgEditor.getValue());
+                        pbar.setVisible(false);
+                    });
+                    imgEditor.restart();
                 }
             }
         });
