@@ -1,0 +1,42 @@
+*{
+	margin:0;
+	padding:1em;
+	color:#000aa3;
+	font-family: 'Noto Serif', serif;
+	box-sizing:border-box;
+	
+}
+
+main{
+	text-align:center;
+	max-width:62rem;
+	margin:auto;
+}
+
+.image{
+	border: solid 1px black;
+	height:25em;
+	background-color:#d6d4d4;
+}
+
+.container{
+	display:grid;
+	grid-template-columns:1fr;
+	grid-template-rows:repeat(2, 1fr);
+	grid-gap:10px;
+}
+
+.option{
+	width:10em;
+	background-color:#F1F1F1;
+}
+
+body{
+	background-color:#bababa;
+}
+
+img{
+	max-height:23em;
+	max-width:875px;
+	padding:0;
+}
