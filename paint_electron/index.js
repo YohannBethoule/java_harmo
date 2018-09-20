@@ -36,7 +36,6 @@ function createWindow () {
 
                                 win.webContents.executeJavaScript("document.getElementById('image_container').insertAdjacentHTML('beforeend', _out);")
 
-
                                 return;
                             });
                     }
@@ -56,6 +55,8 @@ function createWindow () {
     // et charge le index.html de l'application.
     win.loadFile('index.html');
     console.log('alert');
+
 }
 
 app.on('ready', createWindow);
+

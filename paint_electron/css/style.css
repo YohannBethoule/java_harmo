@@ -35,11 +35,18 @@ body{
 	background-color:#bababa;
 }
 
-img{
+#img{
 	max-height:23em;
 	max-width:54em;
 	padding:0;
 }
+
+#og_img{
+	display: none;
+	max-height:23em;
+	max-width:54em;
+}
+
 
 .label-file:hover, .option:hover{
 	background-color:#f7f7f7;
