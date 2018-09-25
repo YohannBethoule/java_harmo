@@ -1,0 +1,46 @@
+*{
+	margin:0;
+	padding:1em;
+	color:#000aa3;
+	font-family: 'Noto Serif', serif;
+	box-sizing:border-box;
+}
+
+main{
+	text-align:center;
+	max-width:62rem;
+	margin:auto;
+	background-color:#aaaaaa;
+}
+
+body{
+	background-color:#bcbcbc;
+}
+
+ul{
+	list-style:none;
+}
+
+button:hover{
+	color:white;
+	background-color:#000aa3;
+}
+
+button{
+	background-color:#f4f4f4;
+	border:none;
+	width:7vw;
+}
+
+.container{
+	display:flex;
+	flex-direction:row;
+}
+
+nav{
+	margin-left:17vw;
+}
+
+.listButton{
+	margin: -5em 0 0 25vw;
+}
