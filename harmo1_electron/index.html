@@ -9,13 +9,13 @@
 		<main>
 			<nav>
 				<ul class="container">
-					<li><button>Sauvegarder</button></li>
-					<li><button>Charger</button></li>
-					<li><button>Trier</button></li>
+					<li><button id="save_button">Sauvegarder</button></li>
+					<li><button id="load_button">Charger</button></li>
+					<li><button id="sort_button">Trier</button></li>
 				</ul>
 			</nav>
 			<section>
-				<table>
+				<table id="carnet">
 					<th>Nom</th>
 					<th>Prenom</th>
 					<th>Telephone</th>
@@ -23,22 +23,33 @@
 						<td>Chateau</td>			
 						<td>Jean-Pierre</td>
 						<td>0606060606</td>
-						<td><button>Supprimer</button></td>
+						<td><button class="rm_button">Supprimer</button></td>
 					</tr>
 					<tr>
 						<td>Crouvizier</td>			
 						<td>Thomas</td>
 						<td>0613206883</td>
-						<td><button>Supprimer</button></td>
-					</tr>
-					<tr>
-						<td><input placeholder="Nom" type="text"/></td>			
-						<td><input placeholder="Prenom" type="text"/></td>
-						<td><input placeholder="0606060606" type="text"/></td>
-						<td><button>Ajouter</button></td>
+						<td><button class="rm_button">Supprimer</button></td>
 					</tr>
 				</table>
+				<form id="contact_form" action="#">
+					<input id="nom" placeholder="Nom" type="text"/>
+					<input id="prenom" placeholder="Prenom" type="text"/>
+					<input id="tel" placeholder="0606060606" type="text"/>
+					<button id="add_button">Ajouter</button>
+				</form>
+
 			</section>
 		</main>
     </body>
+	<!-- Insert this line above script imports  -->
+	<script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
+
+	<!-- normal script imports etc  -->
+	<script src="./node_modules/jquery/dist/jquery.min.js"></script>
+	<script type="application/javascript" src="script.js"></script>
+
+	<!-- Insert this line after script imports -->
+	<script>if (window.module) module = window.module;</script>
+
   </html>
