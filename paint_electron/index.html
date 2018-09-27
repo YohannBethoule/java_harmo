@@ -9,16 +9,16 @@
 		<main>
 			<h1>Modification de photos</h1>
 			<section class="container">
-				<button class="input-file" id="save_file">Save</button>
-				<label for="file" class="label-file">Choose an image</label>
+				<label for="file" class="label-file">Choisir une image</label>
 				<input id="file" class="input-file" type="file">
-				<button class="option" id="grey_btn">grey level render</button>
+				<button class="option" id="grey_btn">Grey level render</button>
 				<select class="option" id="select_color">
-					<option selected>choisir ...</option>
+					<option selected>Choisir ...</option>
 					<option>red</option>
 					<option>blue</option>
 					<option>green</option>
 				</select>
+				<button class="option" id="save">Sauvegarder</button>
 			</section>
 			<div class="image">
 				<img id="og_img" src=""/>
@@ -28,11 +28,6 @@
     </body>
 
 <script>
-
-    var app = require('electron').remote;
-    var dialog = app.dialog;
-    var fs = require('fs');
-
 	var changeColor = function(color){
         img.drawImage(og_img, 0, 0);
         var imgData = img.getImageData(0,0,img.canvas.width, img.canvas.height);
@@ -77,12 +72,14 @@
                 break;
         }
 	}
-	var save_btn = document.getElementById('save_file');
+
+
     var fileChooser = document.getElementById('file');
     var og_img = document.getElementById('og_img');
     var img = document.getElementById('img').getContext('2d');
     var greyBtn = document.getElementById('grey_btn');
     var colorSelect = document.getElementById('select_color');
+	var btnSave = document.getElementById('save');
     fileChooser.addEventListener('change', function(){
         if (this.files && this.files[0]) {
             var reader = new FileReader();
@@ -93,25 +90,6 @@
             reader.readAsDataURL(this.files[0]);
         };
     });
-
-    save_btn.addEventListener('click', function(){
-        dialog.showSaveDialog(function (filePath) {
-            if (filePath === undefined) {
-                return;
-            }
-
-            fs.writeFile(filePath, img.canvas.toDataURL(), function (err) {
-                if (err === undefined) {
-                    dialog.showMessageBox({
-                        message: 'The file has been saved!',
-                        buttons: ['OK']
-                    });
-                } else {
-                    dialog.showErrorBox('File save error', err.message);
-                }
-            });
-        });
-	})
 
     og_img.onload = function(e){
         img.canvas.width = og_img.width;
@@ -124,5 +102,22 @@
 	colorSelect.addEventListener('change', function(){
 		changeColor(colorSelect.value);
 	})
+	
+	btnSave.onclick = function(){
+		
+    }
+	
+	
+	btnSave.addEventListener("submit", function(event) {
+		event.preventDefault();
+		canvas.toBlobHD(function(blob) {
+			saveAs(
+				  blob
+				, (canvas_filename.value || canvas_filename.placeholder) + ".png"
+			);
+		}, "image/png");
+	}, false);
+	
+	
 </script>
   </html>

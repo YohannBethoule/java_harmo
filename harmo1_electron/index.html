@@ -3,16 +3,17 @@
     <head>
       <meta charset="UTF-8">
 	  <link rel="stylesheet" href="css/style.css"/>
-      <title>Paint</title>
+      <title>Gestion carnet d'adresse</title>
     </head>
     <body>
 		<main>
 			<nav>
-				<ul class="container">
-					<li><button id="save_button">Sauvegarder</button></li>
-					<li><button id="load_button">Charger</button></li>
-					<li><button id="sort_button">Trier</button></li>
-				</ul>
+				<section class="container">
+					<button>Sauvegarder</button>
+					<label for="file" class="label-file">Charger</label>
+					<input id="file" class="input-file" type="file">
+					<button>Trier</button>
+				</section>
 			</nav>
 			<section>
 				<table id="carnet">
