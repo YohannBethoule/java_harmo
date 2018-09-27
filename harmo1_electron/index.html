@@ -9,27 +9,32 @@
 		<main>
 			<nav>
 				<section class="container">
-					<button>Sauvegarder</button>
+					<button id="save_button">Sauvegarder</button>
 					<label for="file" class="label-file">Charger</label>
 					<input id="file" class="input-file" type="file">
-					<button>Trier</button>
+					<button id="sort_button">Trier</button>
 				</section>
 			</nav>
 			<section>
 				<table id="carnet">
-					<th>Nom</th>
-					<th>Prenom</th>
-					<th>Telephone</th>
-					<tr>
-						<td>Chateau</td>			
-						<td>Jean-Pierre</td>
-						<td>0606060606</td>
+					
+					
+					<tr class="personne_row">
+						<td class="personne_name">aeaz</td>
+						<td class="personne_firstname">eaze</td>
+						<td class="personne_phone">aezaz</td>
 						<td><button class="rm_button">Supprimer</button></td>
 					</tr>
-					<tr>
-						<td>Crouvizier</td>			
-						<td>Thomas</td>
-						<td>0613206883</td>
+					<tr class="personne_row">
+						<td class="personne_name">ezae</td>
+						<td class="personne_firstname">eaze</td>
+						<td class="personne_phone">zae</td>
+						<td><button class="rm_button">Supprimer</button></td>
+					</tr>
+					<tr class="personne_row">
+						<td class="personne_name">fsf</td>
+						<td class="personne_firstname">sdf</td>
+						<td class="personne_phone">sdf</td>
 						<td><button class="rm_button">Supprimer</button></td>
 					</tr>
 				</table>
@@ -47,7 +52,7 @@
 	<script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
 
 	<!-- normal script imports etc  -->
-	<script src="./node_modules/jquery/dist/jquery.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 	<script type="application/javascript" src="script.js"></script>
 
 	<!-- Insert this line after script imports -->

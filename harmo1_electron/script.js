@@ -1,8 +1,6 @@
-
-
 $(function(){
     var save_btn = $("#save_button");
-    var load_btn = $("#load_button");
+    var file = $("#file");
     var sort_btn = $("#sort_button");
     var add_btn = $("#add_button");
 
@@ -12,53 +10,121 @@ $(function(){
 
     var tab = $("#carnet");
 
+
+    var carnet = {
+        personnes: new Array(),
+
+        updateFromDom: function(){
+            this.personnes = new Array();
+            $('.personne_row').each(function(){
+                var name = $(this).find('.personne_name').html();
+                var firstname = $(this).find('.personne_firstname').html();
+                var phone = $(this).find('.personne_phone').html();
+                
+                carnet.add(name, firstname, phone);
+            });
+        },
+
+        add: function(name, firstname, phone){
+            var p = {
+                name : name,
+                firstname :firstname,
+                phone : phone,
+
+                toString: function(){
+                    return "<tr class='personne_row'><td class='personne_name'>"+this.name+"</td><td class='personne_firstname'>"+this.firstname+"</td><td class='personne_phone'>"+this.phone+"</td><td><button class=\"rm_button\">Supprimer</button></td></tr>";
+                }
+            }
+            this.personnes.push(p);
+            tab.append(p.toString());
+
+            //on rebind l'event handler de la suppression
+            $(".rm_button").on('click', function(){
+                var td = $(this).parent().parent();
+                var name = td.find('.personne_name').html();
+                var firstname = td.find('.personne_firstname').html();
+                var phone = td.find('.personne_phone').html();
+                carnet.remove(name, firstname, phone);
+                $(this).parent().parent().remove();
+            })
+        },
+
+        remove: function(name, firstname, phone){
+            this.personnes.forEach(function(e){
+                if(e.toString() == "<tr class='personne_row'><td class='personne_name'>"+name+"</td><td class='personne_firstname'>"+firstname+"</td><td class='personne_phone'>"+phone+"</td><td><button class=\"rm_button\">Supprimer</button></td></tr>"){
+                    this.personnes.remove(e);
+                }
+            })
+        },
+
+        sort: function(){
+            Array.sort(this.personnes);
+        },
+
+        load: function(){
+
+        }, 
+
+        save: function(){
+
+        }, 
+
+        write: function(){
+            tab.html("");
+            console.log(this.toString());
+            tab.html(this.toString());
+
+            //on rebind l'event handler de la suppression
+            $(".rm_button").on('click', function(){
+                var td = $(this).parent().parent();
+                var name = td.find('.personne_name').html();
+                var firstname = td.find('.personne_firstname').html();
+                var phone = td.find('.personne_phone').html();
+                carnet.remove(name, firstname, phone);
+                $(this).parent().parent().remove();
+            })
+        },
+
+        toString: function(){
+            var text = "";
+            this.personnes.forEach(function(e){
+                text += e.toString();
+            })
+            return text;
+        }
+    };
+
     save_btn.on('click', function(){
-        //sauvegarder le carnet
+        carnet.save();
     });
 
-    load_btn.on('click', function(){
-        //charger le carnet
+    file.on('change', function(){
+        carnet.load();
     });
 
     sort_btn.on('click', function(){
-        for (let i = 0; i < count; i++) {
-            for (let j = 1; j < count - i; j++) {
-                if (personnes[j].compareTo(personnes[j - 1]) < 0) { // j<j-1
-                    Personne tmp = personnes[j];
-                    personnes[j] = personnes[j - 1];
-                    personnes[j - 1] = tmp;
-                }
-            }
-        }
+        carnet.updateFromDom();
+        carnet.sort();
+        carnet.write();
     });
 
     add_btn.on('click', function(){
-        console.log('add');
-        var personne = {
-            name: nom.val(),
-            firstname: prenom.val(),
-            phone: tel.val(),
-
-            toString: function(){
-                return "<tr><td>"+this.name+"</td><td>"+this.firstname+"</td><td>"+this.phone+"</td><td><button class=\"rm_button\">Supprimer</button></td></tr>";
-            }
-        };
-
-        //Ajoute la personne au tableau
-        tab.append(personne.toString());
-
-        //Refait le binding des boutons de suppression
-        $(".rm_button").on('click', function(){
-            console.log($(this).parent());
-            $(this).parent().parent().remove();
-        })
+        var name= nom.val();
+        var firstname = prenom.val();
+        var phone = tel.val();
+        
+        carnet.add(name, firstname, phone);
 
         //Reinitialise les valeurs des champs
         $("#contact_form")[0].reset();
     });
 
     $(".rm_button").on('click', function(){
-        console.log($(this).parent());
+        var td = $(this).parent().parent();
+        var name = td.find('.personne_name').html();
+        var firstname = td.find('.personne_firstname').html();
+        var phone = td.find('.personne_phone').html();
+        carnet.remove(name, firstname, phone);
         $(this).parent().parent().remove();
     })
 });
