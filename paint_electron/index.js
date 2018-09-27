@@ -13,10 +13,20 @@ function openImage(fileName){
     });
 }
 
+function saveImage(fileName){
+    fs.writeFile(fileName, function(err, data){
+       if(err) {
+
+       }else{
+
+       }
+    });
+}
+
 function createWindow () {
     // Cree la fenetre du navigateur.
     let win = new BrowserWindow({width: 800, height: 600});
-
+    win.openDevTools();
     let template = [
         {
             label: 'File',
