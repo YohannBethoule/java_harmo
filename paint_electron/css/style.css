@@ -12,6 +12,14 @@ main{
 	margin:auto;
 }
 
+button{
+	border:none;
+}
+
+body{
+	background-color:#bababa;
+}
+
 .image{
 	border: solid 1px black;
 	height:25em;
@@ -20,24 +28,20 @@ main{
 
 .container{
 	display:grid;
-	grid-template-columns:repeat(3, 1fr);
+	grid-template-columns:repeat(4, 1fr);
 	grid-template-rows:1fr;
+	grid-gap:2em;
 }
 
 .option, .label-file{
-	width:10em;
 	background-color:#dbdbdb;
 	box-shadow:1px 1px gray;
-	margin-left:5em;
-}
-
-body{
-	background-color:#bababa;
+	
 }
 
 #img{
-	max-height:23em;
-	max-width:54em;
+	max-height:23vw;
+	max-width:54vw;
 	padding:0;
 }
 
