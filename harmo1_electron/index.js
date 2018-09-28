@@ -51,6 +51,7 @@ function createWindow () {
     ]
     const menu = Menu.buildFromTemplate(template);
     Menu.setApplicationMenu(menu);
+    win.webContents.openDevTools();
 
     // et charge le index.html de l'application.
     win.loadFile('index.html');

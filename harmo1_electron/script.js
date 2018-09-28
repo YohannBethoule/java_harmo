@@ -1,6 +1,6 @@
 $(function(){
     var save_btn = $("#save_button");
-    var file = $("#file");
+    var load_btn = $("#load_button");
     var sort_btn = $("#sort_button");
     var add_btn = $("#add_button");
 
@@ -10,12 +10,18 @@ $(function(){
 
     var tab = $("#carnet");
 
+    var fs = require('fs');
+    var app = require('electron').remote; 
+    var dialog = app.dialog;
+
+
 
     var carnet = {
         personnes: new Array(),
 
         updateFromDom: function(){
             this.personnes = new Array();
+            tab.html("");
             $('.personne_row').each(function(){
                 var name = $(this).find('.personne_name').html();
                 var firstname = $(this).find('.personne_firstname').html();
@@ -32,56 +38,70 @@ $(function(){
                 phone : phone,
 
                 toString: function(){
-                    return "<tr class='personne_row'><td class='personne_name'>"+this.name+"</td><td class='personne_firstname'>"+this.firstname+"</td><td class='personne_phone'>"+this.phone+"</td><td><button class=\"rm_button\">Supprimer</button></td></tr>";
+                    return "<tr class='personne_row' data-index='"+carnet.personnes.indexOf(this)+"'><td class='personne_name'>"+this.name+"</td><td class='personne_firstname'>"+this.firstname+"</td><td class='personne_phone'>"+this.phone+"</td><td><button class=\"rm_button\">Supprimer</button></td></tr>";
                 }
             }
             this.personnes.push(p);
             tab.append(p.toString());
 
             //on rebind l'event handler de la suppression
-            $(".rm_button").on('click', function(){
-                var td = $(this).parent().parent();
-                var name = td.find('.personne_name').html();
-                var firstname = td.find('.personne_firstname').html();
-                var phone = td.find('.personne_phone').html();
-                carnet.remove(name, firstname, phone);
-                $(this).parent().parent().remove();
+            $(".rm_button").one('click', function(){
+                 remove_handler(this);
             })
         },
 
-        remove: function(name, firstname, phone){
-            this.personnes.forEach(function(e){
-                if(e.toString() == "<tr class='personne_row'><td class='personne_name'>"+name+"</td><td class='personne_firstname'>"+firstname+"</td><td class='personne_phone'>"+phone+"</td><td><button class=\"rm_button\">Supprimer</button></td></tr>"){
-                    this.personnes.remove(e);
-                }
-            })
+        remove: function(index){
+            console.log(index);
+            this.personnes.splice(index, 1);
+            carnet.write();
         },
 
         sort: function(){
-            Array.sort(this.personnes);
+            this.personnes.sort(function(a, b){
+                if (a.name.toLowerCase() < b.name.toLowerCase())
+                    return -1;
+                if (a.name.toLowerCase() > b.name.toLowerCase())
+                    return 1;
+                if (a.firstname.toLowerCase() < b.firstname.toLowerCase())
+                    return -1;
+                if (a.firstname.toLowerCase() > b.firstname.toLowerCase())
+                    return 1;
+
+                return 0;
+            });
         },
 
-        load: function(){
-
+        load: function(file){
+            fs.readFile(file, (err, data) => {
+                if (err) throw err;
+                var obj = JSON.parse(data);
+                
+                carnet.personnes = new Array();
+                obj.forEach(function(p){
+                    carnet.add(p.name, p.firstname, p.phone);
+                })
+                carnet.write();
+            });
+            
         }, 
 
-        save: function(){
-
+        save: function(file){
+            var json_object = JSON.stringify(this.personnes);
+            console.log(json_object);
+            fs.writeFile(file, json_object, (err) => {
+                if(err){
+                    alert("An error ocurred creating the file "+ err.message)
+                }
+            });
         }, 
 
         write: function(){
             tab.html("");
-            console.log(this.toString());
             tab.html(this.toString());
 
             //on rebind l'event handler de la suppression
-            $(".rm_button").on('click', function(){
-                var td = $(this).parent().parent();
-                var name = td.find('.personne_name').html();
-                var firstname = td.find('.personne_firstname').html();
-                var phone = td.find('.personne_phone').html();
-                carnet.remove(name, firstname, phone);
-                $(this).parent().parent().remove();
+            $(".rm_button").one('click', function(){
+                 remove_handler(this);
             })
         },
 
@@ -94,21 +114,43 @@ $(function(){
         }
     };
 
+    var remove_handler = function(button){
+        var td = $(button).parent().parent();
+        var index = td.attr('data-index');
+        carnet.remove(index);
+    }
+
     save_btn.on('click', function(){
-        carnet.save();
+        dialog.showSaveDialog((fileName) => {
+            if (fileName === undefined){
+                console.log("You didn't save the file");
+                return;
+            }else{
+                carnet.save(fileName);
+            }
+
+        }); 
     });
 
-    file.on('change', function(){
-        carnet.load();
+    load_btn.on('click', function(){
+        dialog.showSaveDialog((fileName) => {
+            if (fileName === undefined){
+                console.log("You didn't save the file");
+                return;
+            }else{
+                carnet.load(fileName);
+            }
+
+        }); 
     });
 
     sort_btn.on('click', function(){
-        carnet.updateFromDom();
         carnet.sort();
         carnet.write();
     });
 
-    add_btn.on('click', function(){
+    add_btn.on('click', function(e){
+        e.preventDefault();
         var name= nom.val();
         var firstname = prenom.val();
         var phone = tel.val();
@@ -119,12 +161,11 @@ $(function(){
         $("#contact_form")[0].reset();
     });
 
-    $(".rm_button").on('click', function(){
-        var td = $(this).parent().parent();
-        var name = td.find('.personne_name').html();
-        var firstname = td.find('.personne_firstname').html();
-        var phone = td.find('.personne_phone').html();
-        carnet.remove(name, firstname, phone);
-        $(this).parent().parent().remove();
-    })
+    $(".rm_button").one('click', function(){
+        remove_handler(this);
+    });
+
+    carnet.add('Michel', 'Jean', 1);
+    carnet.add('Jichel', 'Mean', 2);
+    carnet.add('Sichel', 'Zean', 3);
 });
