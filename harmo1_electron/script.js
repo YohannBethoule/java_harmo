@@ -87,7 +87,6 @@ $(function(){
 
         save: function(file){
             var json_object = JSON.stringify(this.personnes);
-            console.log(json_object);
             fs.writeFile(file, json_object, (err) => {
                 if(err){
                     alert("An error ocurred creating the file "+ err.message)
