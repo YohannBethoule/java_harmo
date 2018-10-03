@@ -42,12 +42,12 @@ $(function(){
                 }
             }
             this.personnes.push(p);
-            tab.append(p.toString());
-
-            //on rebind l'event handler de la suppression
-            $(".rm_button").one('click', function(){
-                 remove_handler(this);
-            })
+            // tab.append(p.toString());
+            //
+            // //on rebind l'event handler de la suppression
+            // $(".rm_button").one('click', function(event){
+            //      remove_handler(event);
+            // })
         },
 
         remove: function(index){
@@ -113,8 +113,8 @@ $(function(){
         }
     };
 
-    var remove_handler = function(button){
-        var td = $(button).parent().parent();
+    var remove_handler = function(event){
+        var td = $(event).parent().parent();
         var index = td.attr('data-index');
         carnet.remove(index);
     }
@@ -155,7 +155,7 @@ $(function(){
         var phone = tel.val();
         
         carnet.add(name, firstname, phone);
-
+        carnet.write();
         //Reinitialise les valeurs des champs
         $("#contact_form")[0].reset();
     });
