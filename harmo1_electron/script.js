@@ -163,8 +163,4 @@ $(function(){
     $(".rm_button").one('click', function(){
         remove_handler(this);
     });
-
-    carnet.add('Michel', 'Jean', 1);
-    carnet.add('Jichel', 'Mean', 2);
-    carnet.add('Sichel', 'Zean', 3);
 });
