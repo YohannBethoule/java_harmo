@@ -28,6 +28,11 @@
     </body>
 
 <script>
+    var request = require("request").defaults({ encoding: null });
+    var fs = require('fs');
+    var app = require('electron').remote; 
+    var dialog = app.dialog;
+
 	var changeColor = function(color){
         img.drawImage(og_img, 0, 0);
         var imgData = img.getImageData(0,0,img.canvas.width, img.canvas.height);
@@ -107,17 +112,23 @@
 		
     }
 	
-	
-	btnSave.addEventListener("submit", function(event) {
-		event.preventDefault();
-		canvas.toBlobHD(function(blob) {
-			saveAs(
-				  blob
-				, (canvas_filename.value || canvas_filename.placeholder) + ".png"
-			);
-		}, "image/png");
-	}, false);
-	
+    btnSave.addEventListener('click', function(event){
+        dialog.showSaveDialog((fileName) => {
+            if (fileName === undefined){
+                console.log("You didn't save the file");
+                return;
+            }else{
+                // strip off the data: url prefix to get just the base64-encoded bytes
+                var data = img.canvas.toDataURL('image/png').replace(/^data:image\/\w+;base64,/, "");
+                var buf = new Buffer(data, 'base64');
+                fs.writeFile(fileName, buf, (err) => {      
+                    if(err){
+                        alert("An error ocurred creating the file "+ err.message)
+                    }
+                });
+            }
+        });
+    });
 	
 </script>
   </html>
