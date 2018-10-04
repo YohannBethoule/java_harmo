@@ -16,106 +16,120 @@
 
 
 
-    var carnet = {
-        personnes: new Array(),
+    var carnet = function(){ 
+        var personnes = new Array();
 
-        updateFromDom: function(){
-            this.personnes = new Array();
-            tab.html("");
-            $('.personne_row').each(function(){
-                var name = $(this).find('.personne_name').html();
-                var firstname = $(this).find('.personne_firstname').html();
-                var phone = $(this).find('.personne_phone').html();
-                
-                carnet.add(name, firstname, phone);
-            });
-        },
+        return{
+            getPersonnes: function(){
+                return personnes;
+            },
 
-        add: function(name, firstname, phone){
-            var p = {
-                name : name,
-                firstname :firstname,
-                phone : phone,
+            updateFromDom: function(){
+                personnes = new Array();
+                tab.html("");
+                $('.personne_row').each(function(){
+                    var name = $(this).find('.personne_name').html();
+                    var firstname = $(this).find('.personne_firstname').html();
+                    var phone = $(this).find('.personne_phone').html();
+                    
+                    carnet.add(name, firstname, phone);
+                });
+            },
 
-                toString: function(){
-                    return "<tr class='personne_row' data-index='"+carnet.personnes.indexOf(this)+"'><td class='personne_name'>"+this.name+"</td><td class='personne_firstname'>"+this.firstname+"</td><td class='personne_phone'>"+this.phone+"</td><td><button class=\"rm_button\">Supprimer</button></td></tr>";
-                }
-            }
-            this.personnes.push(p);
-            // tab.append(p.toString());
-            //
-            // //on rebind l'event handler de la suppression
-            // $(".rm_button").one('click', function(event){
-            //      remove_handler(event);
-            // })
-        },
+            add: function(nom, prenom, tel){
+                var p = function(){
+                    var name = nom;
+                    var firstname = prenom;
+                    var phone = tel;
 
-        remove: function(index){
-            console.log(index);
-            this.personnes.splice(index, 1);
-            carnet.write();
-        },
+                    return {
+                        getName : function(){
+                            return name;
+                        },
 
-        sort: function(){
-            this.personnes.sort(function(a, b){
-                if (a.name.toLowerCase() < b.name.toLowerCase())
-                    return -1;
-                if (a.name.toLowerCase() > b.name.toLowerCase())
-                    return 1;
-                if (a.firstname.toLowerCase() < b.firstname.toLowerCase())
-                    return -1;
-                if (a.firstname.toLowerCase() > b.firstname.toLowerCase())
-                    return 1;
+                        getFirstname : function(){
+                            return firstname;
+                        },
 
-                return 0;
-            });
-        },
+                        toString: function(){
+                            return "<tr class='personne_row' data-index='"+personnes.indexOf(p)+"'><td class='personne_name'>"+name+"</td><td class='personne_firstname'>"+firstname+"</td><td class='personne_phone'>"+phone+"</td><td><button class=\"rm_button\">Supprimer</button></td></tr>";
+                        }
+                    }
+                    
+                }();
+                personnes.push(p);
+            },
 
-        load: function(file){
-            fs.readFile(file, (err, data) => {
-                if (err) throw err;
-                var obj = JSON.parse(data);
-                
-                carnet.personnes = new Array();
-                obj.forEach(function(p){
-                    carnet.add(p.name, p.firstname, p.phone);
-                })
+            remove: function(index){
+                console.log(index);
+                personnes.splice(index, 1);
                 carnet.write();
-            });
-            
-        }, 
+            },
 
-        save: function(file){
-            var json_object = JSON.stringify(this.personnes);
-            fs.writeFile(file, json_object, (err) => {
-                if(err){
-                    alert("An error ocurred creating the file "+ err.message)
-                }
-            });
-        }, 
+            sort: function(){
+                personnes.sort(function(a, b){
+                    if (a.getName().toLowerCase() < b.getName().toLowerCase())
+                        return -1;
+                    if (a.getName().toLowerCase() > b.getName().toLowerCase())
+                        return 1;
+                    if (a.getFirstname().toLowerCase() < b.getFirstname().toLowerCase())
+                        return -1;
+                    if (a.getFirstname().toLowerCase() > b.getFirstname().toLowerCase())
+                        return 1;
 
-        write: function(){
-            tab.html("");
-            tab.html(this.toString());
+                    return 0;
+                });
+            },
 
-            //on rebind l'event handler de la suppression
-            $(".rm_button").one('click', function(){
-                 remove_handler(this);
-            })
-        },
+            load: function(file){
+                fs.readFile(file, (err, data) => {
+                    if (err) throw err;
+                    var obj = JSON.parse(data);
+                    
+                    personnes = new Array();
+                    obj.forEach(function(p){
+                        carnet.add(p.name, p.firstname, p.phone);
+                    })
+                    carnet.write();
+                });
+                
+            }, 
 
-        toString: function(){
-            var text = "";
-            this.personnes.forEach(function(e){
-                text += e.toString();
-            })
-            return text;
+            save: function(file){
+                var json_object = JSON.stringify(personnes);
+                fs.writeFile(file, json_object, (err) => {
+                    if(err){
+                        alert("An error ocurred creating the file "+ err.message)
+                    }
+                });
+            }, 
+
+            write: function(){
+                tab.html("");
+                tab.html(carnet.toString());
+                console.log();
+
+                //on rebind l'event handler de la suppression
+                $(".rm_button").one('click', function(){
+                     remove_handler(this);
+                })
+            },
+
+            toString: function(){
+                var text = "";
+                personnes.forEach(function(e){
+                    text += e.toString();
+                })
+                return text;
+            }
         }
-    };
+    }();
 
     var remove_handler = function(event){
         var td = $(event).parent().parent();
+        console.log(td);
         var index = td.attr('data-index');
+        console.log(index);
         carnet.remove(index);
     }
 

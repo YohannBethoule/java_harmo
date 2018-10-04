@@ -15,7 +15,10 @@ public class Personne implements Comparable<Personne>, Serializable {
 
 	@Override
 	public int compareTo(Personne p) {
-		return this.getNom().compareTo(p.getNom());
+		int val = this.getNom().compareTo(p.getNom());
+		if(val == 0){
+			return this.getPrenom().compareTo(p.getPrenom());
+		}
 	}
 
 	@Override
