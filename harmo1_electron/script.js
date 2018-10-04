@@ -1,4 +1,4 @@
-$(function(){
+	$(function(){
     var save_btn = $("#save_button");
     var load_btn = $("#load_button");
     var sort_btn = $("#sort_button");
